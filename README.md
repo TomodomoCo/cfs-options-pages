@@ -31,19 +31,19 @@ After the pages are created, you can link them to CFS field groups within CFS's 
 
 To get data from a specific page or post, Custom Field Suite's `get()` method lets you enter a post/page ID as a second parameter ([documented here](http://customfieldsuite.com/docs/get/)). To get data from an options page, you just need to pass the ID of the desired options page.
 
-To retrieve the ID of a specific options page, `CFSOP()->page( $title )` will return an options page ID. Here's how that looks:
+You can use our custom method&mdash;`CFSOP()->page( $title )`&mdash;to retrieve an options page ID. You can use it directly within your `CFS()->get()` call. Here's how that looks:
 
 ```php
-<?php echo CFS()->get( 'my_field', CFSOP()->page( 'My Options' ) );
+echo CFS()->get( 'my_field', CFSOP()->page( 'My Options' ) );
 ```
 
-If you don't pass an argument to the `page()` method, we'll try to retrieve the ID of the options page titled 'Options' (the page we create by default).
+If you don't pass an argument to the `page()` method, we'll retrieve the ID of the default options page (the page we create by default, titled "Options").
 
 ```php
-<?php echo CFS()->get( 'my_field', CFSOP()->page() );
+echo CFS()->get( 'my_field', CFSOP()->page() );
 ```
 
-If an options page matching your title is not found, we return `FALSE`.
+If an options page matching your title is not found, we return `FALSE`. If that happens, [CFS will use the current post](http://customfieldsuite.com/docs/get/).
 
 ## Caveats
 
