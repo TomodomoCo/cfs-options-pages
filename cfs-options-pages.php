@@ -57,34 +57,38 @@ class CfsOptions {
 	public function page( $title = 'Options' ) {
 		$options_page = get_page_by_title( $title, 'OBJECT', 'cfs_options' );
 
-		if ( is_null( $options_page ) )
+		if ( is_null( $options_page ) ) {
 			return false;
-		else
+		} else {
 			return $options_page->ID;
+		}
 	}
 
 	public function admin_menu() {
+		// Get the first options page
+		$main_options_page_title = reset( $this->options_pages );
+
 		// If we have one options page...
-		if ( $main_options_page = $this->page( reset( $this->options_pages ) ) ) {
+		if ( $main_options_page_id = $this->page( $main_options_page_title ) ) {
 			// Add the top level item
 			add_menu_page(
-				reset( $this->options_pages ),
-				reset( $this->options_pages ),
+				$main_options_page_title,
+				$main_options_page_title,
 				'edit_posts',
-				'/post.php?post=' . $main_options_page . '&action=edit'
+				'/post.php?post=' . $main_options_page_id . '&action=edit'
 			);
 
 			// Then add the sub-items
-			foreach ( $this->options_pages as $options_page ) {
+			foreach ( $this->options_pages as $secondary_options_page_title ) {
 				// If the secondary page has been created...
-				if ( $secondary_options_page = $this->page( $options_page ) ) {
+				if ( $secondary_options_page_id = $this->page( $secondary_options_page_title ) ) {
 					// Add its submenu page
 					add_submenu_page(
-						'/post.php?post=' . $main_options_page . '&action=edit',
-						$options_page,
-						$options_page,
+						'/post.php?post=' . $main_options_page_id . '&action=edit',
+						$secondary_options_page_title,
+						$secondary_options_page_title,
 						'edit_posts',
-						'/post.php?post=' . $secondary_options_page . '&action=edit'
+						'/post.php?post=' . $secondary_options_page_id . '&action=edit'
 					);
 				}
 			}
@@ -93,7 +97,6 @@ class CfsOptions {
 
 	public function add_options_pages() {
 		$this->options_pages = apply_filters( 'cfs_options_pages', $this->options_pages );
-
 
 		// Loop through the defined pages
 		foreach ( $this->options_pages as $options_page ) {
@@ -130,4 +133,5 @@ function setup_cfs_options() {
 		CFS()->options = new CfsOptions;
 	}
 }
-add_action('plugins_loaded', 'setup_cfs_options');
+
+add_action( 'plugins_loaded', 'setup_cfs_options' );
