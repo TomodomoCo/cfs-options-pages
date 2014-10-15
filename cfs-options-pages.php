@@ -125,8 +125,6 @@ class CfsOptions {
 	}
 }
 
-new CfsOptions;
-
 function setup_cfs_options() {
 	if ( function_exists( 'CFS' ) && class_exists( 'CfsOptions' ) ) {
 		CFS()->options = new CfsOptions;
