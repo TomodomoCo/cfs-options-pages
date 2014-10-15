@@ -4,9 +4,32 @@ This plugin allows you to create options pages for use with Custom Field Suite. 
 
 ## How?
 
-The plugin defines an array of options pages (by page title) as `$this->options_pages`. We register a default page, simply titled 'Options', and you can add to that list if you have multiple types of options to manage.
+By default, the plugin will add a single options page, appropriately titled "Options".
 
-After the pages are created, you can link them to CFS field groups within CFS's UI.
+To add additional pages, filter `cfs_options_pages`:
+
+```php
+function my_custom_options_pages( $pages ) {
+	$my_pages = array(
+		'Test Options',
+		'Another Page',
+		'Categories',
+	);
+
+	return array_merge( $pages, $my_pages );
+}
+add_filter( 'cfs_options_pages', 'my_custom_options_pages' );
+```
+
+The above code adds three additional options pages.
+
+After the pages are created, you can link them to CFS field groups within CFS's UI. The options pages will show up in CFS's "Posts" selector, in the Placement Rules metabox.
+
+## Caveats
+
+If you add a custom options page using the `cfs_options_page` filter, and later remove it, that page will **not** be deleted from your database. We're working on ideas to improve this behavior, but for the moment avoid adding extraneous options pages.
+
+If you migrate your options pages and field groups between development/staging/production environments, be aware that your options page IDs may change. This would cause your field groups to become decoupled from your options pages.
 
 ## License
 

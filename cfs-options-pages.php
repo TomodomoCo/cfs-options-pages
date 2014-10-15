@@ -21,6 +21,7 @@ class CfsOptions {
 		add_action( 'init',                  array( $this, 'add_options_pages' ) );
 		add_action( 'admin_menu',            array( $this, 'admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_cleanup' ) );
+
 	}
 
 	public function register_post_type() {
@@ -92,6 +93,8 @@ class CfsOptions {
 	}
 
 	public function add_options_pages() {
+		$this->options_pages = apply_filters( 'cfs_options_pages', $this->options_pages );
+
 		// Loop through the defined pages
 		foreach ( $this->options_pages as $options_page ) {
 			// If the page does not exist...
