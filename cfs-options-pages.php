@@ -21,7 +21,6 @@ class CfsOptions {
 		add_action( 'init',                  array( $this, 'add_options_pages' ) );
 		add_action( 'admin_menu',            array( $this, 'admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_cleanup' ) );
-
 	}
 
 	public function register_post_type() {
@@ -55,37 +54,37 @@ class CfsOptions {
 		}
 	}
 
-	private function options_page_exists( $title ) {
+	public function page( $title = 'Options' ) {
 		$options_page = get_page_by_title( $title, 'OBJECT', 'cfs_options' );
 
 		if ( is_null( $options_page ) )
 			return false;
 		else
-			return $options_page;
+			return $options_page->ID;
 	}
 
 	public function admin_menu() {
 		// If we have one options page...
-		if ( $main_options_page = $this->options_page_exists( reset( $this->options_pages ) ) ) {
+		if ( $main_options_page = $this->page( reset( $this->options_pages ) ) ) {
 			// Add the top level item
 			add_menu_page(
-				'Options',
-				'Options',
+				reset( $this->options_pages ),
+				reset( $this->options_pages ),
 				'edit_posts',
-				'/post.php?post=' . $main_options_page->ID . '&action=edit'
+				'/post.php?post=' . $main_options_page . '&action=edit'
 			);
 
 			// Then add the sub-items
 			foreach ( $this->options_pages as $options_page ) {
 				// If the secondary page has been created...
-				if ( $secondary_options_page = get_page_by_title( $options_page, 'OBJECT', 'cfs_options' ) ) {
+				if ( $secondary_options_page = $this->page( $options_page ) ) {
 					// Add its submenu page
 					add_submenu_page(
-						'/post.php?post=' . $main_options_page->ID . '&action=edit',
+						'/post.php?post=' . $main_options_page . '&action=edit',
 						$options_page,
 						$options_page,
 						'edit_posts',
-						'/post.php?post=' . $secondary_options_page->ID . '&action=edit'
+						'/post.php?post=' . $secondary_options_page . '&action=edit'
 					);
 				}
 			}
@@ -95,10 +94,11 @@ class CfsOptions {
 	public function add_options_pages() {
 		$this->options_pages = apply_filters( 'cfs_options_pages', $this->options_pages );
 
+
 		// Loop through the defined pages
 		foreach ( $this->options_pages as $options_page ) {
 			// If the page does not exist...
-			if ( get_page_by_title( $options_page, 'OBJECT', 'cfs_options' ) == NULL ) {
+			if ( ! $this->page( $options_page ) ) {
 				// ...create it!
 				$options_page = array(
 					'post_title'     => $options_page,
@@ -122,13 +122,6 @@ class CfsOptions {
 
 			wp_enqueue_style( 'cfs_options_cleanup', plugins_url( 'assets/style.css', __FILE__ ) );
 		}
-	}
-
-	public function page( $page = 'Options' ) {
-		if ( $options_page = get_page_by_title( $page, 'OBJECT', 'cfs_options' ) )
-			return $options_page->ID;
-		else
-			return false;
 	}
 }
 
