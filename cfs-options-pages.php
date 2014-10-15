@@ -125,10 +125,11 @@ class CfsOptions {
 	}
 }
 
-if ( ! function_exists( 'cfsop' ) ) {
-	function CFSOP() {
-		return new CfsOptions;
-	}
+new CfsOptions;
 
-	CFSOP();
+function setup_cfs_options() {
+	if ( function_exists( 'CFS' ) && class_exists( 'CfsOptions' ) ) {
+		CFS()->options = new CfsOptions;
+	}
 }
+add_action('plugins_loaded', 'setup_cfs_options');
