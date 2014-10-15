@@ -1,0 +1,16 @@
+{
+    "name": "vanpattenmedia/cfs-options-pages",
+    "description": "Create custom options pages for use with Custom Field Suite",
+    "keywords": ["wordpress", "plugin"],
+    "homepage": "https://www.vanpattenmedia.com/",
+    "authors": [
+        {
+            "name": "Chris Van Patten",
+            "homepage": "http://www.chrisvanpatten.com/"
+        }
+    ],
+    "type": "wordpress-plugin",
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}
