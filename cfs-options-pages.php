@@ -123,6 +123,19 @@ class CfsOptions {
 			wp_enqueue_style( 'cfs_options_cleanup', plugins_url( 'assets/style.css', __FILE__ ) );
 		}
 	}
+
+	public function page( $page = 'Options' ) {
+		if ( $options_page = get_page_by_title( $page, 'OBJECT', 'cfs_options' ) )
+			return $options_page->ID;
+		else
+			return false;
+	}
 }
 
-new CfsOptions;
+if ( ! function_exists( 'cfsop' ) ) {
+	function CFSOP() {
+		return new CfsOptions;
+	}
+
+	CFSOP();
+}
