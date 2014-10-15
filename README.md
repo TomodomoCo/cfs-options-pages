@@ -27,6 +27,8 @@ The above code adds three additional options pages.
 
 After the pages are created, you can link them to CFS field groups within CFS's UI. The options pages will show up in CFS's "Posts" selector, in the Placement Rules metabox.
 
+![Choosing an options page in CFS placement rules](https://i.imgur.com/Gzlr221.png)
+
 ### Retrieving data
 
 To get data from a specific page or post, Custom Field Suite's `get()` method lets you enter a post/page ID as a second parameter ([documented here](http://customfieldsuite.com/docs/get/)). To get data from an options page, you just need to pass the ID of the desired options page.
