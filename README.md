@@ -1,6 +1,8 @@
 # CFS Options Pages
 
-This plugin allows you to create options pages for use with Custom Field Suite. Although it works, and is relatively stable, the code will probably change a fair bit over the coming days/weeks and it's not recommended for use in production unless you're absolutely sure you know what you're doing.
+This plugin allows you to create options pages for use with [Custom Field Suite](http://customfieldsuite.com/).
+
+Although it works, and is relatively stable, the code will probably change a fair bit over the coming days/weeks and it's not recommended for use in production unless you're absolutely sure you know what you're doing.
 
 ## How?
 
