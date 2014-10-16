@@ -35,7 +35,6 @@ class CfsOptions {
 				'show_in_menu'    => false,
 				'capability_type' => 'page',
 				'query_var'       => false,
-				'menu_icon'       => 'dashicons-admin-settings',
 				'supports'        => array(
 					'title',
 					'revisions',
@@ -79,7 +78,9 @@ class CfsOptions {
 				$main_options_page_title,
 				$main_options_page_title,
 				'edit_posts',
-				'/post.php?post=' . $main_options_page_id . '&action=edit'
+				'/post.php?post=' . $main_options_page_id . '&action=edit',
+				'',
+				'dashicons-admin-generic'
 			);
 
 			// Then add the sub-items
