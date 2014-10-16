@@ -129,8 +129,11 @@ class CfsOptions {
 	}
 
 	public function rewrite_labels( $labels ) {
+		if ( ! isset( $_GET['post'] ) )
+			return $labels;
+
 		if ( ! is_numeric( $postID = $_GET['post'] ) )
-			return;
+			return $labels;
 
 		$labels->edit_item .= get_the_title( $postID );
 		return $labels;
