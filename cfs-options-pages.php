@@ -12,6 +12,8 @@ class CfsOptions {
 	public $singular = 'Options Page';
 	public $plural   = 'Options Pages';
 
+	public $screen;
+
 	public $options_pages = array(
 		'Options',
 	);
@@ -21,6 +23,8 @@ class CfsOptions {
 		add_action( 'init',                  array( $this, 'add_options_pages' ) );
 		add_action( 'admin_menu',            array( $this, 'admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_cleanup' ) );
+
+		add_filter( 'post_type_labels_cfs_options', array( $this, 'rewrite_labels' ) );
 	}
 
 	public function register_post_type() {
@@ -41,7 +45,7 @@ class CfsOptions {
 					'all_items'          => 'All ' . $this->plural,
 					'add_new'            => 'New ' . $this->singular,
 					'add_new_item'       => 'New ' . $this->singular,
-					'edit_item'          => 'Edit ' . $this->singular,
+					'edit_item'          => 'Edit ',
 					'new_item'           => 'New ' . $this->singular,
 					'view_item'          => 'View ' . $this->singular,
 					'search_item'        => 'Search ' . $this->plural,
@@ -117,14 +121,19 @@ class CfsOptions {
 	}
 
 	public function admin_cleanup() {
-		global $current_screen;
+		$this->screen = get_current_screen();
 
-		if ( $current_screen->post_type == 'cfs_options' ) {
-			wp_register_script( 'cfs_options_cleanup', plugins_url( 'assets/script.js', __FILE__ ) );
-			wp_enqueue_script( 'cfs_options_cleanup' );
-
+		if ( $this->screen->post_type == 'cfs_options' ) {
 			wp_enqueue_style( 'cfs_options_cleanup', plugins_url( 'assets/style.css', __FILE__ ) );
 		}
+	}
+
+	public function rewrite_labels( $labels ) {
+		if ( ! is_numeric( $postID = $_GET['post'] ) )
+			return;
+
+		$labels->edit_item .= get_the_title( $postID );
+		return $labels;
 	}
 }
 
